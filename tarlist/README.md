@@ -1,18 +1,17 @@
-This is the PERL module which needs to be loaded into a socket
-for exim use, to track which servers which have been sending many 
-mails to many non-existant mailboxes (or some other punishable offence)
+This package is designed to smack nasty email servers.
+
+It tracks which servers which have been sending many 
+mails to many non-existant mailboxes in our domain (or some other punishable offence)
 The MTA side (exim) will determine what to trigger tarpitting.
 
-This module accepts an IP address as it's input. We assume here that exim
-acls will call this module if it suspects funny business.
-As it's first job, we add a timestamped offense for the IP to the database.
-If an IP is in the Tarlist database, this module will return
-the number of times the given IP address has done this so far back to exim. 
+It creates a database of offenders.
 
 Exim acl will then determine what do to with these offenders, but most likely
-we will delay their mail, multiplied per offense over our offense threshold, 
-until they will be waiting until next week for their mail to work again - by
+we will delay their mail, multiplied per offense over our offense threshold (tarpitting), 
+until they will have to wait until next week for their mail to work again - by
 which time they are on spam blacklists (presumably). 
+
+### Requires the following database (MYSQL)
 
 MYSQL database
 CREATE TABLE Tarlist (
