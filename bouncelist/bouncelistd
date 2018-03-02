@@ -1,0 +1,20 @@
+#!/bin/sh
+# Start/stop the exim bouncelist daemon.
+
+test -f /etc/exim/perl/bounce_sockd.pl || exit 0
+
+
+case "$1" in
+start)	echo -n "Starting exim bouncelist daemon"
+        /etc/exim/perl/bounce_sockd.pl > /dev/null 2>&1 &
+	echo "." 
+	;;
+stop)	echo -n "Stopping exim bouncelist daemon"
+	killall bounce_sockd.pl
+        echo "."
+        ;;
+*)	echo "Usage: /etc/init.d/bouncelistd start|stop"
+        exit 1 
+        ;;
+esac
+exit 0
