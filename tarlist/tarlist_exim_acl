@@ -1,0 +1,16 @@
+### This is the Tarpit exim acl fragment
+### For each unknown user error, the sender is delayed an extra 2 seconds
+### per offence.
+
+   warn    domains          = +local_domains
+           !verify          = recipient
+           set acl_m1       = ${readsocket{/var/run/exim_tard.sock}{TARLIST $sen
+der_host_address}{3s}{\n}{0}}
+
+   deny    log_message      = Tarpit: Multiple unknown users ($acl_m1)
+           message          = unknown user
+           domains          = +local_domains
+           !verify          = recipient
+           condition        = ${if >{$acl_m1}{5} {1}{0}}
+           delay            = ${if <{$acl_m1}{60}{${eval:$acl_m1*2}}{120}}s
+
