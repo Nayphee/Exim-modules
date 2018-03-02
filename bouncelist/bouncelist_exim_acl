@@ -1,0 +1,21 @@
+### Bounce rate limiter
+### The acls here will ping sender with more than 60 bounces in the last hour
+### and 300 bounces in the last 24 hours. Now, we could adjust this acl
+### to make a ratio of bounces vs legitimate mails over a certain threshold of
+### mail, but we haven't implemented this yet.
+
+  warn    authenticated   = *
+          set acl_m1 = ${readsocket{/var/run/exim_bounced.sock}{BOUNCELIST $auth
+enticated_id}{3s}{\n}{0:0}}
+          set acl_m2 = ${extract{1}{:}{$acl_m1}}
+          set acl_m3 = ${extract{2}{:}{$acl_m1}}
+
+  defer   authenticated   = *
+          condition       = ${if >{$acl_m2}{60}{1}{0}}
+          log_message     = Bouncelist deferred $acl_m1
+          message = Too many bounces. $acl_m2 in the last 60 minutes.
+
+  defer   authenticated   = *
+          condition       = ${if >{$acl_m3}{300}{1}{0}}
+          log_message     = Bouncelist deferred $acl_m1
+          message = Too many bounces. $acl_m3 in the last 24 hours.
