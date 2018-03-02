@@ -13,11 +13,11 @@ which time they are on spam blacklists (presumably).
 
 ### Requires the following database (MYSQL)
 
-MYSQL database<b>
-CREATE TABLE Tarlist (<b>
-  IP varchar(16) NOT NULL default '',<b>
-  tstamp int(12) default NULL,<b>
-  );<b>
+MYSQL database<p>
+CREATE TABLE Tarlist (<p>
+  IP varchar(16) NOT NULL default '',<p>
+  tstamp int(12) default NULL,<p>
+  );<p>
 
 ### Some install info
 
