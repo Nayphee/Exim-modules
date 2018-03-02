@@ -1,0 +1,20 @@
+#!/bin/sh
+# Start/stop the exim tarlist daemon.
+
+test -f /etc/exim/perl/exim_tard.pl || exit 0
+
+
+case "$1" in
+start)	echo -n "Starting exim tarlist daemon"
+        /etc/exim/perl/exim_tard.pl > /dev/null 2>&1 &
+	echo "." 
+	;;
+stop)	echo -n "Stopping exim tarlist daemon"
+	killall exim_tard.pl
+        echo "."
+        ;;
+*)	echo "Usage: /etc/init.d/tarlistd start|stop"
+        exit 1 
+        ;;
+esac
+exit 0
